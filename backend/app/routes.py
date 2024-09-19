@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, session
+from flask import Blueprint, jsonify, request, session, redirect
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from app.services.google_drive import GoogleDriveService
@@ -27,17 +27,22 @@ def auth():
 
 @bp.route('/oauth2callback')
 def oauth2callback():
-    flow.fetch_token(authorization_response=request.url)
-    credentials= flow.credentials
-    session['credentials'] = {
-        'token': credentials.token,
-        'refresh_token': credentials.refresh_token,
-        'token_uri': credentials.token_uri,
-        'client_id': credentials.client_id,
-        'client_secret': credentials.client_secret,
-        'scopes': credentials.scopes
-    }
-    return 'Auth success - you can close the window'
+    try:
+        flow.fetch_token(authorization_response=request.url)
+        credentials = flow.credentials
+        session['credentials'] = {
+            'token': credentials.token,
+            'refresh_token': credentials.refresh_token,
+            'token_uri': credentials.token_uri,
+            'client_id': credentials.client_id,
+            'client_secret': credentials.client_secret,
+            'scopes': credentials.scopes
+        }
+        print("Credentials stored in session: ", session['credentials'])  # Debug print
+        return redirect('http://localhost:5173')
+    except Exception as e:
+        print(f"Error in oauth2callback: {str(e)}")
+        return f"Error during auth: {str(e)}", 400
 
 @bp.route('/list_files')
 def list_files():

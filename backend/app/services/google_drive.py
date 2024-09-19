@@ -5,7 +5,7 @@ import io
 
 class GoogleDriveService:
     def __init__(self, credentials):
-        self.service - build('drive', 'v3', credentials=credentials)
+        self.service = build('drive', 'v3', credentials=credentials)
     
     def list_files(self):
         results = self.service.files().list(
