@@ -1,5 +1,3 @@
-import { Auth } from './assets/components/Auth'
-import { FileList } from './assets/components/FileList'
 import './App.css'
 import { useEffect, useState } from 'react';
 
