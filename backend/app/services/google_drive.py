@@ -8,7 +8,11 @@ class GoogleDriveService:
         self.service - build('drive', 'v3', credentials=credentials)
     
     def list_files(self):
-        pass
+        results = self.service.files().list(
+            pageSize=10,
+            fields="nextPageToken, files(id, name, mimeType, modifiedTime)"
+        ).execute()
+        return results.get('files', [])
 
     def upload_file(self, file_path, file_name):
         pass
