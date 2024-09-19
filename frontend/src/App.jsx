@@ -6,6 +6,8 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [files, setFiles] = useState([]);
 
+  console.log(files)
+
   useEffect(() => {
     checkAuth();
   }, [])
