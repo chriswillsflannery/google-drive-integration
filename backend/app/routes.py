@@ -12,7 +12,7 @@ client_secrets_file = os.path.join(current_dir, '..', 'client_secrets.json')
 #oath 2.0
 flow = Flow.from_client_secrets_file(
     'client_secrets.json',
-    scopes=['https://www.googleapis.com/auth/drive.file']
+    scopes=['https://www.googleapis.com/auth/drive.readonly']
 )
 flow.redirect_uri = 'http://localhost:5000/oauth2callback'
 
@@ -47,11 +47,17 @@ def oauth2callback():
 @bp.route('/list_files')
 def list_files():
     if 'credentials' not in session:
+        print('No credentials in session')
         return jsonify({ 'error': 'Err: not authenticated' }), 401
     credentials = Credentials(**session['credentials'])
     drive_service = GoogleDriveService(credentials)
-    files = drive_service.list_files()
-    return jsonify(files)
+    try:
+        files = drive_service.list_files()
+        print(f"files retrieved: {files}")
+        return jsonify(files)
+    except Exception as e:
+        print(f"Error listing files: {str(e)}")
+        return jsonify({ 'error': str(e)}), 500
 
 @bp.route('/upload_file', methods=['POST'])
 def upload_file():

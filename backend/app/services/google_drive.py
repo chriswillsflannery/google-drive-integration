@@ -8,11 +8,17 @@ class GoogleDriveService:
         self.service = build('drive', 'v3', credentials=credentials)
     
     def list_files(self):
-        results = self.service.files().list(
-            pageSize=10,
-            fields="nextPageToken, files(id, name, mimeType, modifiedTime)"
-        ).execute()
-        return results.get('files', [])
+        try:
+            results = self.service.files().list(
+                pageSize=10,
+                fields="nextPageToken, files(id, name, mimeType, modifiedTime)"
+            ).execute()
+            files = results.get('files', [])
+            print(f"files got from Google drive: {files}")
+            return files
+        except Exception as e:
+            print(f"Error fetcing files from Google drive: {str(e)}")
+            raise
 
     def upload_file(self, file_path, file_name):
         pass

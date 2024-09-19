@@ -1,5 +1,6 @@
 import './App.css'
 import { useEffect, useState } from 'react';
+import { FileList } from './components/FileList';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,11 +46,7 @@ function App() {
       ) : (
         <div>
           <h2>Your Files:</h2>
-          <ul>
-            {files.map(file => (
-              <li key={file.id}>{file.name}</li>
-            ))}
-          </ul>
+          <FileList files={files} />
         </div>
       )}
     </div>
