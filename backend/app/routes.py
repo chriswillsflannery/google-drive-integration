@@ -5,13 +5,16 @@ from app.services.google_drive import GoogleDriveService
 import os
 
 bp = Blueprint('main', __name__)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+client_secrets_file = os.path.join(current_dir, '..', 'client_secrets.json')
 
 #oath 2.0
 flow = Flow.from_client_secrets_file(
     'client_secrets.json',
     scopes=['https://www.googleapis.com/auth/drive.file']
 )
-flow.redirect_uri = 'http://localhost:5000/oath2callback'
+flow.redirect_uri = 'http://localhost:5000/oauth2callback'
 
 @bp.route('/auth')
 def auth():
