@@ -100,11 +100,15 @@ def download_file(file_id):
     file_content = drive_service.download_file(file_id)
     return file_content
 
-@bp.route('/delete_file/<file_id>')
+@bp.route('/delete_file/<file_id>', methods=['DELETE'])
 def delete_file(file_id):
     if 'credentials' not in session:
         return jsonify({'error': 'Not authenticated'}), 401
     credentials = Credentials(**session['credentials'])
     drive_service = GoogleDriveService(credentials)
-    drive_service.delete_file(file_id)
-    return jsonify({'success': True})
+    try:
+        drive_service.delete_file(file_id)
+        return jsonify({'success': True})
+    except Exception as e:
+        print(f"Error deleting file: {str(e)}")
+        return jsonify({'error': str(e)}), 500

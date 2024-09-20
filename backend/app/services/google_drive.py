@@ -30,4 +30,10 @@ class GoogleDriveService:
         pass
 
     def delete_file(self, file_id):
-        pass
+        try:
+            self.service.files().delete(fileId=file_id).execute()
+            print(f"File with id {file_id} deteted successfully")
+            return True
+        except Exception as e:
+            print(f"Error trying to delete file: {str(e)}")
+            raise

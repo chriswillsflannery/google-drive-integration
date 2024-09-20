@@ -54,14 +54,29 @@ function App() {
 
       if (res.ok) {
         const newFile = await res.json();
-
-        console.log('newFile: ', newFile);
         setFiles(prevFiles => [...prevFiles, newFile]);
       } else {
         console.error('File upload failed');
       }
     } catch (err) {
       console.error('Error uploading file: ', err);
+    }
+  }
+
+  const handleFileDelete = async (fileid) => {
+    try {
+      const res = await fetch(`http://localhost:5000/delete_file/${fileid}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        setFiles(prevFiles => prevFiles.filter(file => file.id !== fileid));
+      } else {
+        console.error('Err: file deletion failed');
+      }
+    } catch (err) {
+      console.error('Err deleting files; ', err);
     }
   }
 
@@ -73,7 +88,11 @@ function App() {
       ) : (
         <div>
           <h2>Your Files:</h2>
-          <FileList files={files} onFileUpload={handleFileUpload} />
+          <FileList
+            files={files}
+            onFileUpload={handleFileUpload}
+            onFileDelete={handleFileDelete}
+          />
         </div>
       )}
     </div>
