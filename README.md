@@ -5,6 +5,18 @@ Application with React/Vite, Python/Flask
 
 ### install dependencies
 
+### run tests
+
+```bash
+From within /backend run:
+pytest tests/test_routes.py
+```
+
+```bash
+From within /frontend run:
+npm run test
+```
+
 ## notes:
 
 <ul>
