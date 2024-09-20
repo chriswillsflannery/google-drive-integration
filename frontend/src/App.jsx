@@ -6,8 +6,6 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [files, setFiles] = useState([]);
 
-  console.log(files)
-
   useEffect(() => {
     checkAuth();
   }, [])
@@ -40,6 +38,33 @@ function App() {
     }
   }
 
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('http://localhost:5000/upload_file', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        const newFile = await res.json();
+
+        console.log('newFile: ', newFile);
+        setFiles(prevFiles => [...prevFiles, newFile]);
+      } else {
+        console.error('File upload failed');
+      }
+    } catch (err) {
+      console.error('Error uploading file: ', err);
+    }
+  }
+
   return (
     <div>
       <h1>Google Drive</h1>
@@ -48,7 +73,7 @@ function App() {
       ) : (
         <div>
           <h2>Your Files:</h2>
-          <FileList files={files} />
+          <FileList files={files} onFileUpload={handleFileUpload} />
         </div>
       )}
     </div>
