@@ -5,6 +5,27 @@ Application with React/Vite, Python/Flask
 
 ### install dependencies
 
+```bash
+install packages necessary for playwright:
+in root folder:
+npm i
+
+install packages necessary for backend:
+cd backend
+python -m venv venv
+source venv/bin/activate (linux/mac)
+pip install -r requirements.txt
+
+run backend:
+flask run
+
+install packages necessary for frontend:
+cd frontend && npm i
+
+run frontend:
+npm run dev
+```
+
 ### run tests
 
 ```bash
