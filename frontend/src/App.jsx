@@ -54,7 +54,7 @@ function App() {
 
       if (res.ok) {
         const newFile = await res.json();
-        setFiles(prevFiles => [...prevFiles, newFile]);
+        setFiles(prevFiles => [newFile, ...prevFiles]);
       } else {
         console.error('File upload failed');
       }
