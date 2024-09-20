@@ -6,18 +6,20 @@ import os
 
 bp = Blueprint('main', __name__)
 current_dir = os.path.dirname(os.path.abspath(__file__))
-
 client_secrets_file = os.path.join(current_dir, '..', 'client_secrets.json')
 
-#oath 2.0
-flow = Flow.from_client_secrets_file(
-    'client_secrets.json',
-    scopes=['https://www.googleapis.com/auth/drive.readonly']
-)
-flow.redirect_uri = 'http://localhost:5000/oauth2callback'
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
+def create_flow():
+    return Flow.from_client_secrets_file(
+        client_secrets_file,
+        scopes=['https://www.googleapis.com/auth/drive.readonly'],
+        redirect_uri="http://localhost:5000/oauth2callback"
+    )
 
 @bp.route('/auth')
 def auth():
+    flow = create_flow()
     authorization_url, state = flow.authorization_url(
         access_type='offline',
         include_granted_scopes='true'
@@ -27,22 +29,19 @@ def auth():
 
 @bp.route('/oauth2callback')
 def oauth2callback():
-    try:
-        flow.fetch_token(authorization_response=request.url)
-        credentials = flow.credentials
-        session['credentials'] = {
-            'token': credentials.token,
-            'refresh_token': credentials.refresh_token,
-            'token_uri': credentials.token_uri,
-            'client_id': credentials.client_id,
-            'client_secret': credentials.client_secret,
-            'scopes': credentials.scopes
-        }
-        print("Credentials stored in session: ", session['credentials'])  # Debug print
-        return redirect('http://localhost:5173')
-    except Exception as e:
-        print(f"Error in oauth2callback: {str(e)}")
-        return f"Error during auth: {str(e)}", 400
+    flow = create_flow()
+    flow.fetch_token(authorization_response=request.url)
+    credentials = flow.credentials
+    session['credentials'] = {
+        'token': credentials.token,
+        'refresh_token': credentials.refresh_token,
+        'token_uri': credentials.token_uri,
+        'client_id': credentials.client_id,
+        'client_secret': credentials.client_secret,
+        'scopes': credentials.scopes
+    }
+    return redirect('http://localhost:5173')  # Redirect to your React app
+
 
 @bp.route('/list_files')
 def list_files():
