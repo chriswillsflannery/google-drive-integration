@@ -88,6 +88,9 @@ npm run test:e2e
         Obviously, there is no typesafety anywhere in the application. If this was a need, we could use OpenAPI (swagger docs) to define all the
         API routes and then use a library to generate the Typescript types based on that schema, then use those types to type the incoming API data.
     </li>
+    <li>
+        Of course, if we were to deploy this for production then the secrets would be loaded in from eg. Google Secrets manager or just ENV vars directly loaded into the Cloud run instance. The client_secrets.json should be excluded from git push and docker image.
+    </li>
 </ul>
 
 ### Generating client secrets (/backend/client_secrets.json):
