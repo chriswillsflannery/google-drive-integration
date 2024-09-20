@@ -24,6 +24,12 @@ cd frontend && npm i
 
 run frontend:
 npm run dev
+
+NOTE: You will need client_secrets.json
+I will provide this separately for testing purposes
+
+view running application:
+http://localhost:5173/
 ```
 
 ### run tests
