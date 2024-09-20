@@ -6,15 +6,16 @@ export const FileList = ({ files, onFileUpload, onFileDelete }) => {
             });
             
             if (response.ok) {
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
+                // create temporary invisible link and trigger it
+                const blob = await response.blob(); // convert server response to raw data
+                const url = window.URL.createObjectURL(blob); // url points to blob data in memory
                 const a = document.createElement('a');
                 a.style.display = 'none';
                 a.href = url;
                 a.download = fileName;
                 document.body.appendChild(a);
                 a.click();
-                window.URL.revokeObjectURL(url);
+                window.URL.revokeObjectURL(url); // memory release
             } else {
                 console.error('Error downloading file');
             }

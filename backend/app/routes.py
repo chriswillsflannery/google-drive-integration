@@ -13,11 +13,11 @@ SCOPES = [
 ]
 
 bp = Blueprint('main', __name__)
-CORS(bp, supports_credentials=True)
+CORS(bp, supports_credentials=True) # allow all 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 client_secrets_file = os.path.join(current_dir, '..', 'client_secrets.json')
 
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' # oauth https override
 
 def create_flow():
     return Flow.from_client_secrets_file(
@@ -42,7 +42,7 @@ def oauth2callback():
     flow = create_flow()
     flow.fetch_token(authorization_response=request.url)
     credentials = flow.credentials
-    session['credentials'] = {
+    session['credentials'] = { # store dict in flask session
         'token': credentials.token,
         'refresh_token': credentials.refresh_token,
         'token_uri': credentials.token_uri,
@@ -58,7 +58,7 @@ def list_files():
     if 'credentials' not in session:
         print('No credentials in session')
         return jsonify({ 'error': 'Err: not authenticated' }), 401
-    credentials = Credentials(**session['credentials'])
+    credentials = Credentials(**session['credentials']) # unpack dict
     drive_service = GoogleDriveService(credentials)
     try:
         files = drive_service.list_files()

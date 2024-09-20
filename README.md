@@ -1,3 +1,10 @@
+# Google Drive API integration
+Application with React/Vite, Python/Flask
+
+## How to / local development
+
+### install dependencies
+
 ## notes:
 
 <ul>
@@ -8,7 +15,7 @@
     </li>
     <li>
         I've chosen to forego allowing user to specify a folder for upload. For the purposes of this application, we're
-        just simply showing the 10 most recent (google api default pagination size) files by modified data, in reverse
+        just simply showing the 10 most recent (specified in gdrive service) files by modified data, in reverse
         chronological order, and these could be either files which are created by me or shared with me. On upload, we
         simply add the uploaded file to the root of the file storage, of files created by me.
     </li>
@@ -24,6 +31,15 @@
         fingerprinting etc. out of the box, so it should all *just work*.
         One obvious and massive improvement here would be to show file upload progress in the UI. I haven't dug deeply enough into Google drive
         API to know whether it provides an API for pause/resume upload (it probably does). Same goes for large downloads.
+    </li>
+    <li>
+        I've included some minimal styling on UI elements, my preferred styling is with Tailwind - using raw
+        style tags feels closest to that workflow without having to actually set up tailwind configs
+        (time tradeoff here = focusing on most important things)
+    </li>
+    <li>
+        Obviously, there is no typesafety anywhere in the application. If this was a need, we could use OpenAPI (swagger docs) to define all the
+        API routes and then use a library to generate the Typescript types based on that schema, then use those types to type the incoming API data.
     </li>
 </ul>
 
