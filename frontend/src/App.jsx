@@ -31,8 +31,15 @@ function App() {
   const handleAuth = async () => {
     try {
       const res = await fetch('http://localhost:5000/auth');
+      if (!res || !res.ok) {
+        throw new Error('Auth request failed');
+      }
       const data = await res.json();
-      window.location.href = data.auth_url;
+      if (data && data.auth_url) {
+        window.location.href = data.auth_url;
+      } else {
+        throw new Error('invalid auth response');
+      }
     } catch (err) {
       console.error('Error in authentication: ', err);
     }
@@ -89,7 +96,7 @@ function App() {
         <div>
           <h2>Your Files:</h2>
           <FileList
-            files={files}
+            files={files || []}
             onFileUpload={handleFileUpload}
             onFileDelete={handleFileDelete}
           />
