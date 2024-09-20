@@ -68,6 +68,7 @@ export const FileList = ({ files, onFileUpload, onFileDelete }) => {
                             </button>
                             <button 
                                 onClick={() => onFileDelete(file.id)}
+                                data-testid={`delete-${file.id}`}
                                 style={{
                                     backgroundColor: '#ff4d4d',
                                     color: 'white',

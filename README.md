@@ -8,13 +8,21 @@ Application with React/Vite, Python/Flask
 ### run tests
 
 ```bash
-From within /backend run:
+backend unit tests:
+cd backend
 pytest tests/test_routes.py
 ```
 
 ```bash
-From within /frontend run:
+frontend unit tests:
+cd frontend
 npm run test
+```
+
+```bash
+playwright e2e tests:
+(from project root):
+npm run test:e2e
 ```
 
 ## notes:

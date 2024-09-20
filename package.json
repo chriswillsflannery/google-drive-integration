@@ -1,0 +1,16 @@
+{
+  "name": "google-drive-integration",
+  "version": "1.0.0",
+  "description": "Application with React/Vite, Python/Flask",
+  "main": "index.js",
+  "scripts": {
+    "test:e2e":"playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.47.2",
+    "@types/node": "^22.5.5"
+  }
+}
